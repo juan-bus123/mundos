@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Planetas de Dragon Ball</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: white;
+      text-align: center;
+    }
+    h1 { margin: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: #1a1a1a;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: scale(1.05); }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card h3 { margin: 10px 0; }
+    .card button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .card button:hover { background: #ff1a1a; }
+  </style>
+</head>
+<body>
+  <h1>🌌 Planetas del Universo Dragon Ball</h1>
+  <div class="grid" id="planetsGrid"></div>
+
+  <script>
+    async function loadPlanets() {
+      try {
+        const response = await fetch("https://dragonball-api.com/api/planets");
+        const data = await response.json();
+        const grid = document.getElementById("planetsGrid");
+
+        data.items.forEach(planet => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+          card.innerHTML = `
+            <img src="${planet.image}" alt="${planet.name}">
+            <h3>${planet.name}</h3>
+            <button onclick="verMas('${planet.id}')">Ver más</button>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Error al cargar planetas:", error);
+      }
+    }
+
+    function verMas(id) {
+      // redirige al detalle pasando el id
+      window.location.href = `planeta-1.html?id=${id}`;
+    }
+
+    loadPlanets();
+  </script>
+</body>
+</html>
